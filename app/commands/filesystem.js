@@ -8,7 +8,7 @@ const reporters = require('../reporters/')
 
 exports.command = 'filesystem [source]'
 
-exports.describe = 'run plugin analysis for "filesystem" at [source]'
+exports.describe = 'run plugin analysis for "filesystem"'
 
 exports.builder = (yargs) => {
   yargs.positional('source', {
