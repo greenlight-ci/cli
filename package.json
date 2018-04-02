@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "@greenlight/config-loader": "^2.0.0",
-    "@greenlight/plugin": "^1.0.0",
+    "@greenlight/plugin": "^1.1.0",
     "chalk": "^2.3.2",
     "logress": "^2.0.2",
     "make-dir": "^1.2.0",

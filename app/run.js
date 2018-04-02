@@ -1,3 +1,4 @@
+const { Promise } = require('smart-promise')
 const chalk = require('chalk')
 const Plugin = require('@greenlight/plugin')
 
@@ -29,6 +30,9 @@ module.exports = function (name, settings, source) {
     return Promise
       .resolve(plugin.run('filesystem', source, GREENLIGHT_TEMP))
       .catch('SpawnError', error => logger.fail(name, chalk`${error.message} {gray (docker error)}`))
+      .catch('InfoError', error => logger.fail(name, chalk`invalid plugin info {gray.dim (${error.message})}`))
+      .catch('ReportError', error => logger.fail(name, chalk`invalid plugin report {gray.dim (${error.message})}`))
+      .catch('SyntaxError', error => logger.fail(name, chalk`${error.message} {gray (json parse error)}`))
       .catch(error => logger.fail(name, chalk`${error.message} {gray (unknown error)}`))
   })
 }
