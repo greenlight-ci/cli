@@ -22,8 +22,9 @@ module.exports = (results) => {
     console.log(chalk`{gray > ${issues.length} issues found:}`)
     console.log()
     for (const {id, name, description, severity, context} of issues) {
-      console.log(chalk`- {magenta ${context.path}}:{gray ${context.start.line}:${context.end.line}}`)
+      console.log(chalk`- {magenta ${context.path}}:{gray ${context.start.line}:${context.start.column}}`)
       console.log(chalk`  [{gray ${id}}] {red ${severity}} ${description} {gray ${name}}`)
+      console.log()
     }
     console.log()
   }
