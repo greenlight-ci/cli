@@ -1,4 +1,5 @@
 const Logress = require('logress')
+const chalk = require('chalk')
 
 const { GREENLIGHT_DEBUG } = require('./env')
 
@@ -6,7 +7,7 @@ const { GREENLIGHT_DEBUG } = require('./env')
 const log = new Logress({ spinner: 'dots5' })
 
 function logger (method, name, message, ...args) {
-  GREENLIGHT_DEBUG ? console.log(name, message) : log[method](name, `[${name}]: ${message}`, ...args)
+  GREENLIGHT_DEBUG ? console.log(name, message) : log[method](name, chalk`{gray [${name}]}: ${message}`, ...args)
 }
 
 module.exports = {
