@@ -1,4 +1,4 @@
-![Greenlight Logo](https://gitcdn.link/repo/greenlight-ci/brand/master/logo/banner.svg)
+![Greenlight Logo](https://gitcdn.link/repo/greenlight/brand/master/logo/banner.svg)
 
 # Greenlight CLI [![version][npm-version]][npm-url] [![License][license-image]][license-url] [![Build Status][travis-image]][travis-url]
 
@@ -53,7 +53,7 @@ $ greenlight /path/to/project
 
 > License: [ISC][license-url] • 
 > Copyright: [greenlight.ci](https://greenlight.ci) • 
-> Github: [@greenlight-CI](https://github.com/greenlight-CI) • 
+> Github: [@greenlight](https://github.com/greenlight) • 
 > Twitter: [@greenlightCI](https://twitter.com/greenlightCI)
 
 [greenlight]: https://greenlight.ci
@@ -66,6 +66,6 @@ $ greenlight /path/to/project
 
 [npm-version]: https://img.shields.io/npm/v/@greenlight/cli.svg?style=flat-square
 
-[travis-image]: https://img.shields.io/travis/greenlight-ci/cli.svg?style=flat-square
+[travis-image]: https://img.shields.io/travis/greenlight/cli.svg?style=flat-square
 
-[travis-url]: https://travis-ci.org/greenlight-ci/cli
+[travis-url]: https://travis-ci.org/greenlight/cli
