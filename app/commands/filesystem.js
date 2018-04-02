@@ -1,10 +1,10 @@
 const { parse, discover } = require('@greenlight/config-loader')
 const { Promise } = require('smart-promise')
-const chalk = require('chalk')
 const make = require('make-dir')
 
 const { GREENLIGHT_TEMP } = require('../env')
 const run = require('../run')
+const reporters = require('../reporters/')
 
 exports.command = 'filesystem [source]'
 
@@ -52,38 +52,11 @@ exports.handler = async argv => {
   // only select enabled plugins
   plugins = plugins.filter(([key, value]) => value === true || (typeof value === 'object' && value.enabled !== false))
 
-  Promise
-    .all(plugins.map(([name, settings]) => run(name, settings, argv.source)))
-    .then(results => {
-      if (argv.reporter === 'text') {
-        console.log()
+  const results = await Promise.all(plugins.map(([name, settings]) => run(name, settings, argv.source)))
 
-        for (const {name, run, issues} of results) {
-          if (!run) {
-            console.log(chalk`{yellow.bold # ${name}}`)
-            console.log(chalk`{gray.italic > skipped: no matching context}`)
-            console.log()
-            continue
-          }
+  // run reporter
+  reporters[argv.reporter].call(null, results)
 
-          if (issues.length === 0) {
-            console.log(chalk`{green.bold # ${name}}`)
-            console.log(chalk`{gray > no issues found}`)
-            console.log()
-            continue
-          }
-
-          console.log(chalk`{red.bold # ${name}}`)
-          console.log(chalk`{gray > ${issues.length} issues found:}`)
-          console.log()
-          for (const {id, name, description, severity, context} of issues) {
-            console.log(chalk`- {magenta ${context.path}}:{gray ${context.start.line}:${context.end.line}}`)
-            console.log(chalk`  [{gray ${id}}] {red ${severity}} ${description} {gray ${name}}`)
-          }
-          console.log()
-        }
-      }
-
-      process.exit(argv['soft-exit'] ? 0 : 1)
-    })
+  // exit
+  process.exit(argv['soft-exit'] ? 0 : 1)
 }
