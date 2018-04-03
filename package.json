@@ -6,7 +6,7 @@
   "homepage": "https://greenlight.ci/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/greenlighti/cli.git"
+    "url": "https://github.com/greenlight/cli.git"
   },
   "license": "ISC",
   "bin": {
