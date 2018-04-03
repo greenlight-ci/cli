@@ -1,6 +1,6 @@
 repository:
   name: cli
-  description: Greenlight Command Line Interface
+  description: 🚦 Greenlight Command Line Interface
   topics: greenlight, cli
   homepage: https://greenlight.ci/
   private: false
