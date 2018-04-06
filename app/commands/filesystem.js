@@ -3,8 +3,8 @@ const { Promise } = require('smart-promise')
 const make = require('make-dir')
 
 const { GREENLIGHT_TEMP } = require('../env')
-const run = require('../run')
 const reporters = require('../reporters/')
+const run = require('../run')
 
 exports.command = 'filesystem [source]'
 
@@ -52,6 +52,7 @@ exports.handler = async argv => {
   // only select enabled plugins
   plugins = plugins.filter(([key, value]) => value === true || (typeof value === 'object' && value.enabled !== false))
 
+  // run all plugins
   const results = await Promise.all(plugins.map(([name, settings]) => run(name, settings, argv.source)))
 
   // run reporter
