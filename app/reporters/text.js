@@ -1,31 +1,49 @@
 const chalk = require('chalk')
+const table = require('text-table')
 
 module.exports = (results) => {
   console.log()
 
   for (const {name, run, issues} of results) {
     if (!run) {
-      console.log(chalk`{yellow.bold # ${name}}`)
-      console.log(chalk`{gray.italic > skipped: no matching context}`)
+      console.log(chalk`{bold {yellow ⏺} ${name}} {gray.italic > skipped: no matching context}`)
       console.log()
       continue
     }
 
     if (issues.length === 0) {
-      console.log(chalk`{green.bold # ${name}}`)
-      console.log(chalk`{gray > no issues found}`)
+      console.log(chalk`{bold {green ⏺} ${name}} {gray > no issues found}`)
       console.log()
       continue
     }
 
-    console.log(chalk`{red.bold # ${name}}`)
-    console.log(chalk`{gray > ${issues.length} issues found:}`)
+    console.log(chalk`{bold {red ⏺} ${name}} {red ${issues.length} issues found}`)
     console.log()
-    for (const {id, name, description, severity, context} of issues) {
-      console.log(chalk`- {magenta ${context.path}}:{gray ${context.start.line}:${context.start.column}}`)
-      console.log(chalk`  [{gray ${id}}] {red ${severity}} ${description} {gray ${name}}`)
+
+    const sorted = {}
+
+    issues.forEach(issue => {
+      if (!sorted[issue.context.path]) sorted[issue.context.path] = []
+
+      sorted[issue.context.path].push(issue)
+    })
+
+    for (const path of Object.keys(sorted)) {
+      console.log(chalk`{magenta.underline ${path}}`)
+      const lines = []
+
+      for (const {id, name, description, severity, context} of sorted[path]) {
+        lines.push([
+          ' ',
+          chalk`{gray ${context.start.line}:${context.start.column}}`,
+          chalk`{red ${severity}}`,
+          description,
+          chalk`{gray ${name}}`
+        ])
+      }
+
+      console.log(table(lines))
       console.log()
     }
-    console.log()
   }
 }

@@ -43,6 +43,7 @@
     "logress": "^2.0.2",
     "make-dir": "^1.2.0",
     "smart-promise": "^2.0.0",
+    "text-table": "^0.2.0",
     "yargs": "^11.0.0"
   }
 }
