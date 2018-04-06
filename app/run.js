@@ -29,11 +29,11 @@ module.exports = function (name, settings, source) {
     // execute
     return Promise
       .resolve(plugin.run('filesystem', source, GREENLIGHT_TEMP))
-      .catch('SpawnError', error => logger.fail(name, chalk`${error.message} {gray (docker error)}`, error))
-      .catch('InfoError', error => logger.fail(name, chalk`invalid plugin info {gray.dim (${error.message})}`, error))
-      .catch('ReportError', error => logger.fail(name, chalk`invalid plugin report {gray.dim (${error.message})}`, error))
-      .catch('SyntaxError', error => logger.fail(name, chalk`${error.message} {gray (json parse error)}`, error))
-      .catch(error => logger.fail(name, chalk`${error.message} {gray (unknown error)}`, error))
+      .catch('SpawnError', error => logger.fail(name, chalk`{gray.dim ${error.stderr.trim()}}`, error))
+      .catch('InfoError', error => logger.fail(name, chalk`{gray invalid plugin info:} {gray.dim ${error.message}}`, error))
+      .catch('ReportError', error => logger.fail(name, chalk`{gray invalid plugin report:} {gray.dim ${error.message}}`, error))
+      .catch('SyntaxError', error => logger.fail(name, chalk`{gray json parse error:} {gray.dim ${error.message}}`, error))
+      .catch(error => logger.fail(name, chalk`{gray unknown error:} {gray.dim ${error.message}}`, error))
       // send an empty response
       .then(() => resolve({
         name,
