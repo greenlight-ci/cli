@@ -1,21 +1,29 @@
 const Logress = require('logress')
-const chalk = require('chalk')
+const { blue, yellow, green, red, bold, gray } = require('chalk')
 
 const { GREENLIGHT_DEBUG } = require('./env')
 
 // initiate logger
-const log = new Logress({ spinner: 'dots5' })
+const log = new Logress({ spinner: 'circleHalves' })
 
-function logger (method, name, message, ...args) {
-  GREENLIGHT_DEBUG ? console.log(name, message, ...args) : log[method](name, chalk`{gray [${name}]}: ${message}`)
+const indicators = {
+  'blue': blue('⏺'),
+  'green': green('⏺'),
+  'red': red('⏺'),
+  'yellow': yellow('⏺')
+}
+
+const format = (name, msg) => {
+  return `${bold(name)}: ${gray(msg)}`
 }
 
 module.exports = {
   end: () => !GREENLIGHT_DEBUG || log.end(),
-  fail: (name, message, ...args) => logger('fail', name, message, ...args),
-  info: (name, message, ...args) => logger('info', name, message, ...args),
-  start: (name, message, ...args) => logger('start', name, message, ...args),
-  success: (name, message, ...args) => logger('success', name, message, ...args),
-  update: (name, message, ...args) => logger('update', name, message, ...args),
-  warn: (name, message, ...args) => logger('warn', name, message, ...args)
+  start: (name, msg) => log.start(name, format(name, msg)),
+  update: (name, msg) => log.update(name, format(name, msg)),
+
+  fail: (name, msg) => log.prefix(name, indicators.red, format(name, msg)),
+  info: (name, msg) => log.prefix(name, indicators.blue, format(name, msg)),
+  success: (name, msg) => log.prefix(name, indicators.green, format(name, msg)),
+  warn: (name, msg) => log.prefix(name, indicators.yellow, format(name, msg))
 }

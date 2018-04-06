@@ -34,5 +34,11 @@ module.exports = function (name, settings, source) {
       .catch('ReportError', error => logger.fail(name, chalk`invalid plugin report {gray.dim (${error.message})}`, error))
       .catch('SyntaxError', error => logger.fail(name, chalk`${error.message} {gray (json parse error)}`, error))
       .catch(error => logger.fail(name, chalk`${error.message} {gray (unknown error)}`, error))
+      // send an empty response
+      .then(() => resolve({
+        name,
+        run: false,
+        issues: []
+      }))
   })
 }

@@ -4,46 +4,37 @@ const table = require('text-table')
 module.exports = (results) => {
   console.log()
 
-  for (const {name, run, issues} of results) {
-    if (!run) {
-      console.log(chalk`{bold {yellow ⏺} ${name}} {gray.italic > skipped: no matching context}`)
+  for (const {name, issues} of results) {
+    if (issues.length > 0) {
+      console.log(chalk`{bold {red ⏺} ${name}} {red ${issues.length} issues found}`)
       console.log()
-      continue
-    }
 
-    if (issues.length === 0) {
-      console.log(chalk`{bold {green ⏺} ${name}} {gray > no issues found}`)
-      console.log()
-      continue
-    }
+      const sorted = {}
 
-    console.log(chalk`{bold {red ⏺} ${name}} {red ${issues.length} issues found}`)
-    console.log()
+      issues.forEach(issue => {
+        if (!sorted[issue.context.path]) sorted[issue.context.path] = []
 
-    const sorted = {}
+        sorted[issue.context.path].push(issue)
+      })
 
-    issues.forEach(issue => {
-      if (!sorted[issue.context.path]) sorted[issue.context.path] = []
+      for (const path of Object.keys(sorted)) {
+        console.log(chalk`{magenta ${path}}`)
+        console.log()
 
-      sorted[issue.context.path].push(issue)
-    })
+        const lines = []
 
-    for (const path of Object.keys(sorted)) {
-      console.log(chalk`{magenta.underline ${path}}`)
-      const lines = []
+        for (const {id, name, description, severity, context} of sorted[path]) {
+          lines.push([
+            chalk`{gray ${context.start.line}:${context.start.column}}`,
+            chalk`{red ${severity}}`,
+            description,
+            chalk`{gray ${name}}`
+          ])
+        }
 
-      for (const {id, name, description, severity, context} of sorted[path]) {
-        lines.push([
-          ' ',
-          chalk`{gray ${context.start.line}:${context.start.column}}`,
-          chalk`{red ${severity}}`,
-          description,
-          chalk`{gray ${name}}`
-        ])
+        console.log(table(lines))
+        console.log()
       }
-
-      console.log(table(lines))
-      console.log()
     }
   }
 }
