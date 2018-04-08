@@ -1,10 +1,16 @@
 const chalk = require('chalk')
 const table = require('text-table')
+const strip = require('strip-ansi')
+const test = require('color-support')
+
+const colors = test().hasBasic
+
+const log = message => console.log(colors ? message : strip(message))
 
 module.exports = (results) => {
-  for (const {name, issues} of results) {
+  for (const { plugin, issues } of results) {
     if (issues.length > 0) {
-      console.log(chalk`{bold {red ⏺} ${name}} {red issues: ${issues.length}}`)
+      log(chalk`{bold {red ⏺} ${plugin}} {red issues: ${issues.length}}`)
       console.log()
 
       const sorted = {}
@@ -16,7 +22,7 @@ module.exports = (results) => {
       })
 
       for (const path of Object.keys(sorted)) {
-        console.log(chalk`{magenta ${path}}`)
+        log(chalk`{magenta ${path}}`)
         console.log()
 
         const lines = []
@@ -30,7 +36,7 @@ module.exports = (results) => {
           ])
         }
 
-        console.log(table(lines))
+        log(table(lines))
         console.log()
       }
     }

@@ -29,8 +29,7 @@
   },
   "scripts": {
     "test": "npm run test:tap",
-    "test:codeclimate": ".scripts/codeclimate analyze",
-    "test:tap": "tap test/*.js --100 --coverage-report=lcov --no-browser",
+    "test:tap": "tap $(find test -name *.js -not -path 'test/fixtures/*') --coverage-report=lcov --no-browser",
     "coverage": "opener coverage/lcov-report/index.html"
   },
   "devDependencies": {
@@ -40,9 +39,11 @@
     "@greenlight/config-loader": "^2.2.0",
     "@greenlight/docker": "^1.4.0",
     "chalk": "^2.3.2",
+    "color-support": "^1.1.3",
     "logress": "^2.0.2",
     "make-dir": "^1.2.0",
     "smart-promise": "^2.0.0",
+    "strip-ansi": "^4.0.0",
     "text-table": "^0.2.0",
     "yargs": "^11.0.0"
   }

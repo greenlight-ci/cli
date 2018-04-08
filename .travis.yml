@@ -20,6 +20,7 @@ jobs:
   include:
     - stage: test
       before_script: test-reporter before-build
+      script: make test
       after_script: test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
     - stage: release

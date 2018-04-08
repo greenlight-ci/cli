@@ -25,7 +25,7 @@ module.exports = async function (name, settings, source) {
 
     const result = await docker.run(name, settings, source, GREENLIGHT_TEMP)
 
-    if (!result) return { name, run: false, issues: [] }
+    if (!result) return { plugin: name, run: false, issues: [] }
 
     if (result.issues.length === 0) {
       logger.success(name, 'issues: 0')
@@ -33,9 +33,9 @@ module.exports = async function (name, settings, source) {
       logger.fail(name, `issues: ${result.issues.length}`)
     }
 
-    return { name, run: true, issues: result.issues }
+    return { plugin: name, run: true, issues: result.issues }
   } catch (error) {
     logger.fail(name, error.message)
-    return { name, run: false, issues: [] }
+    return { plugin: name, run: false, issues: [] }
   }
 }

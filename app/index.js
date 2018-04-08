@@ -64,13 +64,18 @@ const handler = async argv => {
   // run reporter
   reporters[argv.reporter].call(null, results)
 
+  // if one plugin didn't run => exit(1)
+  if (results.find(report => report.run === false)) {
+    process.exit(1)
+  }
+
+  // no need to check for issues => exit(0)
   if (argv.exit) {
     process.exit(0)
   }
 
-  const failure = results.find(report => report.issues.length > 0)
-
-  process.exit(failure ? 1 : 0)
+  // if one issue found => exit(1)
+  process.exit(results.find(report => report.issues.length > 0) ? 1 : 0)
 }
 
 require('yargs') // eslint-disable-line no-unused-expressions
