@@ -2,11 +2,9 @@ const chalk = require('chalk')
 const table = require('text-table')
 
 module.exports = (results) => {
-  console.log()
-
   for (const {name, issues} of results) {
     if (issues.length > 0) {
-      console.log(chalk`{bold {red ⏺} ${name}} {red ${issues.length} issues found}`)
+      console.log(chalk`{bold {red ⏺} ${name}} {red issues: ${issues.length}}`)
       console.log()
 
       const sorted = {}
@@ -23,7 +21,7 @@ module.exports = (results) => {
 
         const lines = []
 
-        for (const {id, name, description, severity, context} of sorted[path]) {
+        for (const { name, description, severity, context } of sorted[path]) {
           lines.push([
             chalk`{gray ${context.start.line}:${context.start.column}}`,
             chalk`{red ${severity}}`,

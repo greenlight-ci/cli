@@ -1,28 +1,80 @@
 #!/usr/bin/env node
 
 const { red, bold } = require('chalk')
+const { parse, discover } = require('@greenlight/config-loader')
+const { Promise } = require('smart-promise')
+const make = require('make-dir')
 
-require('yargs') // eslint-disable-line no-unused-expressions
-  .options({
+const { GREENLIGHT_TEMP } = require('./env')
+const logger = require('./logger')
+const reporters = require('./reporters/')
+const run = require('./run')
+
+const builder = yargs => {
+  yargs.positional('source', {
+    type: 'string',
+    description: 'source path to use'
+  })
+
+  yargs.options({
     config: {
+      alias: 'c',
       type: 'strig',
       description: 'path to greenlight config file'
     },
 
     reporter: {
+      alias: 'r',
       type: 'string',
       description: 'Use the specified output reporter',
       choices: ['text', 'json', 'html', 'silent'],
       default: 'text'
     },
 
-    'soft-exit': {
+    exit: {
+      alias: 'e',
       type: 'boolean',
-      description: 'do not exit(1) if issues are found'
+      default: false,
+      description: 'soft exit(0) even if issues were found'
     }
   })
-  .commandDir('commands')
-  .demandCommand()
+}
+
+const handler = async argv => {
+  // we don't set the default in yargs to keep the help output clean
+  argv.source = argv.source || process.cwd()
+
+  // attempt to read config
+  const config = argv.config ? await parse(argv.config) : await discover(argv.source)
+
+  // make temp dir
+  await make(GREENLIGHT_TEMP)
+
+  // loop through all plugins
+  let plugins = Object.entries(config.plugins)
+
+  // only select enabled plugins
+  plugins = plugins.filter(([key, value]) => value === true || (typeof value === 'object' && value.enabled !== false))
+
+  // run all plugins
+  const results = await Promise.all(plugins.map(([name, settings]) => run(name, settings, argv.source)))
+
+  logger.log.end()
+
+  // run reporter
+  reporters[argv.reporter].call(null, results)
+
+  if (argv.exit) {
+    process.exit(0)
+  }
+
+  const failure = results.find(report => report.issues.length > 0)
+
+  process.exit(failure ? 1 : 0)
+}
+
+require('yargs') // eslint-disable-line no-unused-expressions
+  .usage('$0 [source]', 'run analysis', builder, handler)
   .help()
   .fail((message, error, yargs) => {
     console.error(`Oops! ${red(error ? error.message : message)}\n\n${bold('Usage')}:\n`)

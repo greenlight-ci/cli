@@ -1,24 +1,31 @@
 const Logress = require('logress')
-const { blue, yellow, green, red, bold, gray } = require('chalk')
-
-const { GREENLIGHT_DEBUG } = require('./env')
+const chalk = require('chalk')
 
 // initiate logger
-const log = new Logress({ spinner: 'circleHalves' })
+const log = new Logress({
+  spinner: {
+    interval: 200,
+    frames: [
+      chalk`{white ⏺}`,
+      chalk`{gray ⏺}`,
+      chalk`{gray.dim ⏺}`
+    ]
+  }
+})
 
 const indicators = {
-  'blue': blue('⏺'),
-  'green': green('⏺'),
-  'red': red('⏺'),
-  'yellow': yellow('⏺')
+  'blue': chalk`{blue ⏺}`,
+  'green': chalk`{green ⏺}`,
+  'red': chalk`{red ⏺}`,
+  'yellow': chalk`{yellow ⏺}`
 }
 
 const format = (name, msg) => {
-  return `${bold(name)}: ${gray(msg)}`
+  return chalk`{bold ${name}} {gray ${msg.trim()}}`
 }
 
 module.exports = {
-  end: () => !GREENLIGHT_DEBUG || log.end(),
+  log,
   start: (name, msg) => log.start(name, format(name, msg)),
   update: (name, msg) => log.update(name, format(name, msg)),
 
