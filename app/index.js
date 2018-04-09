@@ -6,7 +6,7 @@ const { Promise } = require('smart-promise')
 const make = require('make-dir')
 
 const { GREENLIGHT_TEMP } = require('./env')
-const logger = require('./logger')
+const { log } = require('./logger')
 const reporters = require('./reporters/')
 const run = require('./run')
 
@@ -59,7 +59,7 @@ const handler = async argv => {
   // run all plugins
   const results = await Promise.all(plugins.map(([name, settings]) => run(name, settings, argv.source)))
 
-  logger.log.end()
+  log.end()
 
   // run reporter
   reporters[argv.reporter].call(null, results)

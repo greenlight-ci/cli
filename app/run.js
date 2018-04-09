@@ -4,7 +4,7 @@ const { GREENLIGHT_TEMP } = require('./env')
 const logger = require('./logger')
 
 module.exports = async function (name, settings, source) {
-  // this.emit('start')
+  logger.start(name, 'starting')
 
   try {
     const status = await docker.check(name)
