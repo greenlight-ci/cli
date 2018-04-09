@@ -1,6 +1,6 @@
 const chalk = require('chalk')
-const table = require('text-table')
 const strip = require('strip-ansi')
+const table = require('text-table')
 const test = require('color-support')
 
 const colors = test().hasBasic

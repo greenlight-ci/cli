@@ -1,12 +1,15 @@
-const Logress = require('logress')
 const chalk = require('chalk')
+const Logress = require('logress')
+const strip = require('strip-ansi')
+const test = require('color-support')
+
+const colors = (!!+process.env.GREENLIGHT_COLORS || test().hasBasic) && !+process.env.GREENLIGHT_NO_COLORS
 
 // initiate logger
 const log = new Logress({
   spinner: {
-    interval: 200,
+    interval: 100,
     frames: [
-      chalk`{white ⏺}`,
       chalk`{gray ⏺}`,
       chalk`{gray.dim ⏺}`
     ]
@@ -21,16 +24,17 @@ const indicators = {
 }
 
 const format = (name, msg) => {
-  return chalk`{bold ${name}} {gray ${msg.trim()}}`
+  const output = chalk`{bold ${name}} {gray ${msg.trim()}}`
+  return colors ? output : strip(output)
 }
 
 module.exports = {
   log,
-  start: (name, msg) => log.start(name, format(name, msg)),
-  update: (name, msg) => log.update(name, format(name, msg)),
+  start: (name, msg) => !colors ? console.log(`⏺ ${name} ${msg}`) : log.start(name, format(name, msg)),
+  update: (name, msg) => !colors ? console.log(`⏺ ${name} ${msg}`) : log.update(name, format(name, msg)),
 
-  fail: (name, msg) => log.prefix(name, indicators.red, format(name, msg)),
-  info: (name, msg) => log.prefix(name, indicators.blue, format(name, msg)),
-  success: (name, msg) => log.prefix(name, indicators.green, format(name, msg)),
-  warn: (name, msg) => log.prefix(name, indicators.yellow, format(name, msg))
+  fail: (name, msg) => !colors ? console.log(`⏺ ${name} ${msg}`) : log.prefix(name, indicators.red, format(name, msg)),
+  info: (name, msg) => !colors ? console.log(`⏺ ${name} ${msg}`) : log.prefix(name, indicators.blue, format(name, msg)),
+  success: (name, msg) => !colors ? console.log(`⏺ ${name} ${msg}`) : log.prefix(name, indicators.green, format(name, msg)),
+  warn: (name, msg) => !colors ? console.log(`⏺ ${name} ${msg}`) : log.prefix(name, indicators.yellow, format(name, msg))
 }
