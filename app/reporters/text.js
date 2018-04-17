@@ -14,12 +14,12 @@ module.exports = (results) => {
   for (const { plugin, issues } of results) {
     if (issues.length > 0) {
       if (!issues.find(issue => issue.severity !== 'info')) {
-        process.stderr.write(chalk`{bold {blue ⏺} ${plugin}} {blue issues: ${issues.length}}\n`)
+        process.stdout.write(chalk`{bold {blue ⏺} ${plugin}} {blue issues: ${issues.length}}\n`)
       } else {
-        process.stderr.write(chalk`{bold {red ⏺} ${plugin}} {red issues: ${issues.length}}\n`)
+        process.stdout.write(chalk`{bold {red ⏺} ${plugin}} {red issues: ${issues.length}}\n`)
       }
 
-      process.stderr.write('\n')
+      process.stdout.write('\n')
 
       const sorted = {}
 
@@ -30,9 +30,9 @@ module.exports = (results) => {
       })
 
       for (const path of Object.keys(sorted)) {
-        process.stderr.write(chalk`{green ${path}}\n`)
+        process.stdout.write(chalk`{green ${path}}\n`)
 
-        process.stderr.write('\n')
+        process.stdout.write('\n')
 
         const lines = []
 
@@ -45,9 +45,9 @@ module.exports = (results) => {
           ])
         }
 
-        process.stderr.write(table(lines) + '\n')
+        process.stdout.write(table(lines) + '\n')
 
-        process.stderr.write('\n')
+        process.stdout.write('\n')
       }
     }
   }
