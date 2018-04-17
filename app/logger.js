@@ -29,12 +29,11 @@ const format = (name, msg) => {
 }
 
 module.exports = {
-  log,
   start: (name, msg) => !colors ? console.log(`⏺ ${name} ${msg}`) : log.start(name, format(name, msg)),
   update: (name, msg) => !colors ? console.log(`⏺ ${name} ${msg}`) : log.update(name, format(name, msg)),
-
-  fail: (name, msg) => !colors ? console.log(`⏺ ${name} ${msg}`) : log.prefix(name, indicators.red, format(name, msg)),
   info: (name, msg) => !colors ? console.log(`⏺ ${name} ${msg}`) : log.prefix(name, indicators.blue, format(name, msg)),
   success: (name, msg) => !colors ? console.log(`⏺ ${name} ${msg}`) : log.prefix(name, indicators.green, format(name, msg)),
-  warn: (name, msg) => !colors ? console.log(`⏺ ${name} ${msg}`) : log.prefix(name, indicators.yellow, format(name, msg))
+  warn: (name, msg) => !colors ? console.log(`⏺ ${name} ${msg}`) : log.prefix(name, indicators.yellow, format(name, msg)),
+  fail: (name, msg, error) => !colors ? console.log(`⏺ ${name} ${msg}`) : log.prefix(name, indicators.red, format(name, msg)),
+  end: () => log.end()
 }

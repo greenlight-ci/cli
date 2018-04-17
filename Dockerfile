@@ -4,8 +4,8 @@ LABEL maintainer="Ahmad Nassri <ahmad@ahmadnassri.com>"
 RUN apk add --update --no-cache --virtual docker
 
 COPY app /greenlight
-copy package.json /greenlight/
-copy package-lock.json /greenlight/
+COPY package.json /greenlight/
+COPY package-lock.json /greenlight/
 
 WORKDIR /greenlight/
 RUN npm install --production
