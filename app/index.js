@@ -57,7 +57,7 @@ const handler = async argv => {
   plugins = plugins.filter(([key, value]) => value === true || (typeof value === 'object' && value.enabled !== false))
 
   // run all plugins
-  const results = await Promise.all(plugins.map(([name, config]) => run(name, config.tag, config.settings, argv.source)))
+  const results = await Promise.all(plugins.map(([name, settings]) => run(name, settings, argv.source)))
 
   // close the logger
   end()

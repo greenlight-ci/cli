@@ -4,13 +4,24 @@ const table = require('text-table')
 const test = require('color-support')
 
 const colors = test().hasBasic
+const severityColors = {
+  info: 'blue',
+  minor: 'yellow',
+  major: 'magenta',
+  critical: 'red'
+}
 
 const log = message => console.log(colors ? message : strip(message))
 
 module.exports = (results) => {
   for (const { plugin, issues } of results) {
     if (issues.length > 0) {
-      log(chalk`{bold {red ⏺} ${plugin}} {red issues: ${issues.length}}`)
+
+      if (!issues.find(issue => issue.severity !== 'info')) {
+        log(chalk`{bold {blue ⏺} ${plugin}} {blue issues: ${issues.length}}`)
+      } else {
+        log(chalk`{bold {red ⏺} ${plugin}} {red issues: ${issues.length}}`)
+      }
       console.log()
 
       const sorted = {}
@@ -22,7 +33,7 @@ module.exports = (results) => {
       })
 
       for (const path of Object.keys(sorted)) {
-        log(chalk`{magenta ${path}}`)
+        log(chalk`{green ${path}}`)
         console.log()
 
         const lines = []
@@ -30,7 +41,7 @@ module.exports = (results) => {
         for (const { name, description, severity, context } of sorted[path]) {
           lines.push([
             chalk`{gray ${context.start.line}:${context.start.column}}`,
-            chalk`{red ${severity}}`,
+            chalk`{${severityColors[severity]} ${severity}}`,
             description,
             chalk`{gray ${name}}`
           ])
