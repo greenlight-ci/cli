@@ -83,7 +83,7 @@ require('yargs') // eslint-disable-line no-unused-expressions
   .usage('$0 [source]', 'run analysis', builder, handler)
   .help()
   .fail((message, error, yargs) => {
-    console.error(`Oops! ${red(error ? error.message : message)}\n\n${bold('Usage')}:\n`)
+    process.stderr.write(`Oops! ${red(error ? error.message : message)}\n\n${bold('Usage')}:\n\n`)
     yargs.showHelp()
     process.exit(1)
   })

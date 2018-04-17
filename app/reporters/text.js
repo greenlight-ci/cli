@@ -3,7 +3,6 @@ const strip = require('strip-ansi')
 const table = require('text-table')
 const test = require('color-support')
 
-const colors = test().hasBasic
 const severityColors = {
   info: 'blue',
   minor: 'yellow',
@@ -11,18 +10,16 @@ const severityColors = {
   critical: 'red'
 }
 
-const log = message => console.log(colors ? message : strip(message))
-
 module.exports = (results) => {
   for (const { plugin, issues } of results) {
     if (issues.length > 0) {
-
       if (!issues.find(issue => issue.severity !== 'info')) {
-        log(chalk`{bold {blue ⏺} ${plugin}} {blue issues: ${issues.length}}`)
+        process.stderr.write(chalk`{bold {blue ⏺} ${plugin}} {blue issues: ${issues.length}}\n`)
       } else {
-        log(chalk`{bold {red ⏺} ${plugin}} {red issues: ${issues.length}}`)
+        process.stderr.write(chalk`{bold {red ⏺} ${plugin}} {red issues: ${issues.length}}\n`)
       }
-      console.log()
+
+      process.stderr.write('\n')
 
       const sorted = {}
 
@@ -33,8 +30,9 @@ module.exports = (results) => {
       })
 
       for (const path of Object.keys(sorted)) {
-        log(chalk`{green ${path}}`)
-        console.log()
+        process.stderr.write(chalk`{green ${path}}\n`)
+
+        process.stderr.write('\n')
 
         const lines = []
 
@@ -47,8 +45,9 @@ module.exports = (results) => {
           ])
         }
 
-        log(table(lines))
-        console.log()
+        process.stderr.write(table(lines) + '\n')
+
+        process.stderr.write('\n')
       }
     }
   }

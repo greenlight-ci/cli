@@ -5,7 +5,7 @@ const logger = require('./logger')
 
 module.exports = function (name, settings, source) {
   return new Promise(async (resolve, reject) => {
-    const docker = new Docker(name, settings.tag, settings)
+    const docker = new Docker(name, settings)
     const issues = []
     let fail = false
     let info = {}
@@ -20,7 +20,7 @@ module.exports = function (name, settings, source) {
 
       if (issue.severity !== 'info') fail = true
 
-      logger[fail ? 'fail' : 'info'].call(logger, name, `found ${issues.length} issues`)
+      logger[fail ? 'fail' : 'info'](name, `found ${issues.length} issues`)
     })
 
     docker.on('end', code => {
@@ -32,8 +32,8 @@ module.exports = function (name, settings, source) {
     try {
       const status = await docker.check()
 
-      if (status === '') {
-        logger.update(name, 'image not found, attempting to pull')
+      if (!status) {
+        logger.update(name, 'pulling from registry')
 
         const result = await docker.pull()
 

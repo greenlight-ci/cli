@@ -1,1 +1,1 @@
-module.exports = results => console.log(JSON.stringify(results))
+module.exports = results => process.stdout.write(JSON.stringify(results))
