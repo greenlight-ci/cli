@@ -4,10 +4,9 @@ test('text reporter', assert => {
   assert.plan(1)
 
   const stdout = []
-  console.log = str => stdout.push(str)
 
   const json = require('../../app/reporters/json')
-  json({ foo: 'bar' })
+  json({ foo: 'bar' }, { write: str => stdout.push(str) })
 
   assert.equal(stdout.shift(), '{"foo":"bar"}')
 })

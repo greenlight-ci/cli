@@ -1,7 +1,5 @@
 const chalk = require('chalk')
-const strip = require('strip-ansi')
 const table = require('text-table')
-const test = require('color-support')
 
 const severityColors = {
   info: 'blue',
@@ -10,16 +8,16 @@ const severityColors = {
   critical: 'red'
 }
 
-module.exports = (results) => {
+module.exports = (results, stdout = process.stdout) => {
   for (const { plugin, issues } of results) {
     if (issues.length > 0) {
       if (!issues.find(issue => issue.severity !== 'info')) {
-        process.stdout.write(chalk`{bold {blue ⏺} ${plugin}} {blue issues: ${issues.length}}\n`)
+        stdout.write(chalk`{bold {blue ⏺} ${plugin}} {blue issues: ${issues.length}}\n`)
       } else {
-        process.stdout.write(chalk`{bold {red ⏺} ${plugin}} {red issues: ${issues.length}}\n`)
+        stdout.write(chalk`{bold {red ⏺} ${plugin}} {red issues: ${issues.length}}\n`)
       }
 
-      process.stdout.write('\n')
+      stdout.write('\n')
 
       const sorted = {}
 
@@ -30,9 +28,9 @@ module.exports = (results) => {
       })
 
       for (const path of Object.keys(sorted)) {
-        process.stdout.write(chalk`{green ${path}}\n`)
+        stdout.write(chalk`{green ${path}}\n`)
 
-        process.stdout.write('\n')
+        stdout.write('\n')
 
         const lines = []
 
@@ -45,9 +43,9 @@ module.exports = (results) => {
           ])
         }
 
-        process.stdout.write(table(lines) + '\n')
+        stdout.write(table(lines) + '\n')
 
-        process.stdout.write('\n')
+        stdout.write('\n')
       }
     }
   }

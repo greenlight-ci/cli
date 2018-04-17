@@ -1,9 +1,5 @@
 const chalk = require('chalk')
 const Logress = require('logress')
-const strip = require('strip-ansi')
-const test = require('color-support')
-
-const colors = (!!+process.env.GREENLIGHT_COLORS || test().hasBasic) && !+process.env.GREENLIGHT_NO_COLORS
 
 // initiate logger
 const log = new Logress({
@@ -24,10 +20,7 @@ const indicators = {
   'yellow': chalk`{yellow ⏺}`
 }
 
-const format = (name, msg) => {
-  const output = chalk`{bold ${name}} {gray ${msg.trim()}}`
-  return colors ? output : strip(output)
-}
+const format = (name, msg) => chalk`{bold ${name}} {gray ${msg.trim()}}`
 
 module.exports = {
   start: (name, msg) => log.start(name, format(name, msg)),

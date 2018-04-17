@@ -1,4 +1,5 @@
 const { test } = require('tap')
+const strip = require('strip-ansi')
 
 const reports = [
   {
@@ -52,19 +53,18 @@ test('text reporter', assert => {
   assert.plan(1)
 
   const stdout = []
-  console.log = str => stdout.push(str)
 
   const text = require('../../app/reporters/text')
 
-  text(reports)
+  text(reports, { write: str => stdout.push(strip(str.trim())) })
 
   const expected = [
     '⏺ a issues: 2',
-    null,
+    '',
     'path/to/file.js',
-    null,
+    '',
     '2:10  critical  Extra semicolon  semi\n2:10  critical  Extra semicolon  semi',
-    null
+    ''
   ]
 
   assert.same(stdout, expected)
