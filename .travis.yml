@@ -24,6 +24,7 @@ jobs:
       after_script: test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
     - stage: release
+      script: make all
       script: npx semantic-release
       if: branch = master
       if: type IN (push)
