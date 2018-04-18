@@ -1,4 +1,4 @@
 publish:
   - path: "@semantic-release/npm"
   - path: "@semantic-release/github"
-    assets: bin/*
+    assets: bin/*.tar.gz
