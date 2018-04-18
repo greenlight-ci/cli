@@ -7,17 +7,17 @@ const log = new Logress({
   spinner: {
     interval: 100,
     frames: [
-      chalk`{gray ⏺}`,
-      chalk`{gray.dim ⏺}`
+      chalk`{gray ●}`,
+      chalk`{gray.dim ●}`
     ]
   }
 })
 
 const indicators = {
-  'blue': chalk`{blue ⏺}`,
-  'green': chalk`{green ⏺}`,
-  'red': chalk`{red ⏺}`,
-  'yellow': chalk`{yellow ⏺}`
+  'blue': chalk`{blue ●}`,
+  'green': chalk`{green ●}`,
+  'red': chalk`{red ●}`,
+  'yellow': chalk`{yellow ●}`
 }
 
 const format = (name, msg) => chalk`{bold ${name}} {gray ${msg.trim()}}`
