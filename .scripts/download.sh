@@ -19,4 +19,9 @@ case "$(uname -m)" in
   ;;
 esac
 
-curl -L https://github.com/greenlight/cli/releases/download/v1.10.0/$os-$arch.tar.gz | tar xvzf - -C bin/
+REPO="greenlight/cli"
+LATEST_RELEASE=$(curl -L -s -H 'Accept: application/json' https://github.com/$REPO/releases/latest)
+LATEST_VERSION=$(echo $LATEST_RELEASE | sed -e 's/.*"tag_name":"\([^"]*\)".*/\1/')
+ARTIFACT_URL="https://github.com/$REPO/releases/download/$LATEST_VERSION/$os-$arch.tar.gz"
+
+curl -L $ARTIFACT_URL | tar xvzf - -C bin/

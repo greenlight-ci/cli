@@ -14,7 +14,7 @@ clean:
 
 install:
 	mkdir -p bin
-	./.scripts/install.sh
+	./.scripts/download.sh
 	mkdir -p $(DESTDIR)$(PREFIX)/bin
 	install -m 0755 bin/* $(DESTDIR)$(PREFIX)/bin/greenlight
 
