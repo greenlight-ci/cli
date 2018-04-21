@@ -5,7 +5,7 @@ const { parse, discover } = require('@greenlight/config-loader')
 const { Promise } = require('smart-promise')
 const make = require('make-dir')
 
-const { GREENLIGHT_TEMP } = require('./env')
+const { GREENLIGHT_SOURCE, GREENLIGHT_TEMP } = require('./env')
 const { end } = require('./logger')
 const reporters = require('./reporters/')
 const run = require('./run')
@@ -42,7 +42,7 @@ const builder = yargs => {
 
 const handler = async argv => {
   // we don't set the default in yargs to keep the help output clean
-  argv.source = argv.source || process.cwd()
+  argv.source = argv.source || GREENLIGHT_SOURCE
 
   // attempt to read config
   const config = argv.config ? await parse(argv.config) : await discover(argv.source)
