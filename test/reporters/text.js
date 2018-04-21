@@ -59,7 +59,7 @@ test('text reporter', assert => {
   text(reports, { write: str => stdout.push(strip(str.trim())) })
 
   const expected = [
-    '⏺ a issues: 2',
+    '● a issues: 2',
     '',
     'path/to/file.js',
     '',
