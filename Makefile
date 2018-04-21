@@ -1,4 +1,4 @@
-.PHONY: clean all install uninstall
+.PHONY: clean all install uninstall image
 
 SOURCES = node9-linux-x64 node9-linux-x86 node9-macos-x64 node9-macos-x86 node9-win-x64 node9-win-x86
 
@@ -12,11 +12,5 @@ all: clean $(SOURCES)
 clean:
 	rm -rf bin
 
-install:
-	mkdir -p bin
-	./.scripts/download.sh
-	mkdir -p $(DESTDIR)$(PREFIX)/bin
-	install -m 0755 bin/* $(DESTDIR)$(PREFIX)/bin/greenlight
-
-uninstall:
-	$(RM) $(DESTDIR)$(PREFIX)/bin/greenlight
+image:
+	docker build -t greenlight/cli .
