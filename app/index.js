@@ -33,9 +33,9 @@ const builder = yargs => {
 
     exit: {
       alias: 'e',
-      type: 'boolean',
-      default: false,
-      description: 'soft exit(0) even if issues were found'
+      type: 'integer',
+      default: 1,
+      description: 'exit code to use'
     }
   })
 }
@@ -70,13 +70,8 @@ const handler = async argv => {
     process.exit(1)
   }
 
-  // no need to check for issues => exit(0)
-  if (argv.exit) {
-    process.exit(0)
-  }
-
-  // if one issue found => exit(1)
-  process.exit(results.find(report => report.issues.length > 0) ? 1 : 0)
+  // if one issue found => exit with specified code
+  process.exit(results.find(report => report.issues.length > 0) ? argv.exit : 0)
 }
 
 require('yargs') // eslint-disable-line no-unused-expressions
