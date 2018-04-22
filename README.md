@@ -30,23 +30,36 @@ Options:
 ```
 
 ```bash
-$ greenlight /path/to/project
+greenlight /path/to/project
 
-✔ [greenlight/plugin-a]: completed successfully
-⚠ [greenlight/plugin-b]: driver mismatch, skipping
-✖ [greenlight/plugin-c]: found 1 issues
+● audits/dummy found 0 issues
+● audits/demo found 10 issues
+● audits/eslint found 1 issues
 
-# greenlight/plugin-a
-> no issues found
+● audits/demo issues: 10
 
-# greenlight/plugin-b
-> skipped: no matching context
+/src/box.js
 
-# greenlight/plugin-c
-> 1 issues found:
+79:43  major  Unexpected ronald with a shirty mosque         approval
+38:3   minor  Unexpected hospital with a heedless report     network
+14:64  major  Unexpected drawer with a pimpled appliance     spider
+83:10  info   Unexpected kite with a trillion mother-in-law  bladder
+29:51  minor  Unexpected digestion with a phocine secretary  hamburger
+/src/peripheral.js
+99:10  minor  Unexpected force with a waspy atom        dresser
+24:24  info   Unexpected daffodil with a tussal step    town
+31:40  minor  Unexpected daniel with a trustless cover  metal
 
-- path/to/file.js:2:2
-  [123456] critical Extra semicolon semi
+/src/plate.js
+
+33:34  critical  Unexpected toy with a silenced cream   rabbit
+53:55  info      Unexpected wren with an hourlong sort  tsunami
+
+● audits/eslint issues: 1
+
+/src/box.js
+
+2:7  major  'settings' is assigned a value but never used.  no-unused-vars
 ```
 
 ---
