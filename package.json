@@ -33,7 +33,7 @@
     "coverage": "opener coverage/lcov-report/index.html"
   },
   "devDependencies": {
-    "strip-ansi": "^4.0.0",
+    "strip-ansi": "^5.0.0",
     "tap": "^11.1.4"
   },
   "dependencies": {
