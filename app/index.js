@@ -50,7 +50,7 @@ const handler = async argv => {
   // make temp dir
   await make(GREENLIGHT_TEMP)
 
-  // loop through all plugins
+  // convert plugins object to iterable
   let plugins = Object.entries(config.plugins)
 
   // only select enabled plugins

@@ -13,7 +13,10 @@ module.exports = function (name, settings, source) {
     logger.start(name, 'starting')
 
     // docker.on('error:schema', error => )
-    // docker.on('error:stderr', error => )
+    docker.on('error:stderr', error => {
+      logger.fail(name, error)
+      return resolve({ plugin: name, run: false, info, issues: [] })
+    })
 
     docker.on('data', issue => {
       issues.push(issue)
@@ -24,6 +27,8 @@ module.exports = function (name, settings, source) {
     })
 
     docker.on('end', code => {
+      if (code !== 0) return
+
       if (issues.length === 0) logger.success(name, `found ${issues.length} issues`)
 
       resolve({ plugin: name, run: true, info, issues })
