@@ -1,6 +1,6 @@
 .PHONY: clean all install uninstall image
 
-SOURCES = node9-linux-x64 node9-linux-x86 node9-macos-x64 node9-macos-x86 node9-win-x64 node9-win-x86
+SOURCES = node10-linux-x64 node10-linux-x86 node10-macos-x64 node10-macos-x86 node10-win-x64 node10-win-x86
 
 %:
 	$(eval NAME=$(subst node9-,,$@))
