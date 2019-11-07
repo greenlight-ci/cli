@@ -3,7 +3,7 @@ repository:
   description: 🚦 Greenlight Command Line Interface
   topics: greenlight, cli
   homepage: https://greenlight.ci/
-  private: false
+  private: true
   has_issues: true
   has_wiki: false
   has_downloads: false
